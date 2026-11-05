@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ক্লাস চলছে...</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: #0f1117;
+    color: #e8e8e8;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .container { width: 100%; max-width: 960px; }
+
+  header {
+    text-align: center;
+    margin-bottom: 18px;
+    padding: 12px;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+    color: #fff;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .live-dot {
+    width: 12px; height: 12px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(34,197,94,0.6); }
+    70%  { box-shadow: 0 0 0 12px rgba(34,197,94,0); }
+    100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+  }
+
+  header p {
+    color: #8b93a7;
+    margin-top: 6px;
+    font-size: 0.88rem;
+  }
+
+  .player-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    border: 1px solid #262b38;
+  }
+
+  .player-wrapper iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* লোডিং স্পিনার */
+  .loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: #0a0c11;
+    z-index: 5;
+    transition: opacity 0.4s;
+  }
+
+  .loader.hidden { opacity: 0; pointer-events: none; }
+
+  .spinner {
+    width: 48px; height: 48px;
+    border: 4px solid #2a3040;
+    border-top-color: #6cb6ff;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loader p { color: #8b93a7; font-size: 0.9rem; }
+
+  .info-bar {
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 14px 18px;
+    background: #1a1e27;
+    border-radius: 10px;
+    border: 1px solid #262b38;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: #1e3a5f;
+    color: #6cb6ff;
+    border: 1px solid #2a4d7a;
+  }
+
+  .badge .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .video-id {
+    font-size: 0.78rem;
+    color: #6b7385;
+    font-family: monospace;
+  }
+
+  footer {
+    margin-top: 26px;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #4d5566;
+    padding-bottom: 20px;
+  }
+
+  @media (max-width: 500px) {
+    header h1 { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1><span class="live-dot"></span> ক্লাস চলছে</h1>
+    <p>রেকর্ডেড ক্লাস স্বয়ংক্রিয়ভাবে লোড হচ্ছে...</p>
+  </header>
+
+  <div class="player-wrapper" id="playerWrapper">
+    <!-- লোডিং স্পিনার -->
+    <div class="loader" id="loader">
+      <div class="spinner"></div>
+      <p>ভিডিও লোড হচ্ছে...</p>
+    </div>
+  </div>
+
+  <div class="info-bar">
+    <span class="badge">
+      <span class="dot"></span> Recorded Class
+    </span>
+    <span class="video-id">ID: 32cb7041-85ff-48e4-ab0e-a9e6fb243cab</span>
+  </div>
+
+  <footer>Powered by BunnyCDN MediaDelivery</footer>
+</div>
+
+<script>
+  // আপনার JSON ডেটা
+  const data = {
+    "class_video": {
+      "id": 1226,
+      "video_type": "recorded",
+      "embed_url": null,
+      "youtube_url": null,
+      "video_url": null,
+      "url": null,
+      "thumbnail_url": "https://thumbnail.bunnycdn.com/688553/32cb7041-85ff-48e4-ab0e-a9e6fb243cab.jpg",
+      "recorded_video": {
+        "video_id": "32cb7041-85ff-48e4-ab0e-a9e6fb243cab",
+        "video_url": "https://iframe.mediadelivery.net/embed/688553/32cb7041-85ff-48e4-ab0e-a9e6fb243cab?autoplay=true",
+        "thumbnail_url": "https://thumbnail.bunnycdn.com/688553/32cb7041-85ff-48e4-ab0e-a9e6fb243cab.jpg"
+      },
+      "broadcast": null
+    },
+    "is_live_class": false
+  };
+
+  const cv = data.class_video;
+  const wrapper = document.getElementById('playerWrapper');
+  const loader  = document.getElementById('loader');
+
+  // ভিডিও URL বের করা (অটোপ্লে প্যারামিটার সহ)
+  function getVideoUrl() {
+    let url = null;
+    if (cv.recorded_video && cv.recorded_video.video_url) url = cv.recorded_video.video_url;
+    else if (cv.embed_url) url = cv.embed_url;
+    else if (cv.video_url) url = cv.video_url;
+    else if (cv.url) url = cv.url;
+
+    if (!url) return null;
+
+    // অটোপ্লে প্যারামিটার যোগ করা (না থাকলে)
+    if (!/[?&]autoplay=/.test(url)) {
+      url += (url.includes('?') ? '&' : '?') + 'autoplay=true';
+    }
+    return url;
+  }
+
+  // পেজ লোড হলেই সরাসরি ভিডিও চালু
+  function autoLoadPlayer() {
+    const url = getVideoUrl();
+    if (!url) {
+      loader.innerHTML = '<p style="color:#ff6b6b">কোনো ভিডিও পাওয়া যায়নি।</p>';
+      return;
+    }
+
+    const iframe = document.createElement('iframe');
+    iframe.src = url;
+    iframe.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
+    iframe.allowFullscreen = true;
+    iframe.title = 'Class Video';
+
+    // iframe লোড হলে স্পিনার সরিয়ে ফেলা
+    iframe.addEventListener('load', () => {
+      loader.classList.add('hidden');
+    });
+
+    wrapper.appendChild(iframe);
+
+    // নিরাপত্তা: ৩ সেকেন্ড পর স্পিনার লুকিয়ে ফেলা (যদি load ইভেন্ট না ধরা পড়ে)
+    setTimeout(() => loader.classList.add('hidden'), 3000);
+  }
+
+  // DOM রেডি হলেই চালু
+  window.addEventListener('DOMContentLoaded', autoLoadPlayer);
+</script>
+
+</body>
+</html>
